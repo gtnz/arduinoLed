@@ -19,10 +19,17 @@ void NextUp(uint8_t k) {
   if (k == LED_COUNT-1){
     strip[k] = CRGB::Red;
     strip[0] = CRGB::Red;
-  }  
+//    strip[1] = CRGB::Red;
+  }
+  if (k ==  LED_COUNT-2) {
+    strip[k] = CRGB::Red;
+    strip[k+1] = CRGB::Red;
+//    strip[0] = CRGB::Red;    
+  }
   else {
     strip[k] = CRGB::Red;
     strip[k+1] = CRGB::Red;
+//    strip[k+2] = CRGB::Red;
   }
   FastLED.show();
 }
@@ -42,55 +49,6 @@ void NextDown(uint8_t k) {
   FastLED.show();
 }
 
-void RunUp() {
-  for (uint8_t i = 0; i < LED_COUNT; i++) {
-    delay(500);
-    if (i == 0) {
-      strip[LED_COUNT-1] = CRGB::Black;
-      strip[i] = CRGB::Red;
-      strip[i+1] = CRGB::Red;
-    }
-    else 
-    if (i == LED_COUNT-1){
-      strip[i-1] = CRGB::Black;
-      strip[i] = CRGB::Red;
-      strip[0] = CRGB::Red;
-    }  
-    else {
-      strip[i-1] = CRGB::Black;
-      strip[i] = CRGB::Red;
-      strip[i+1] = CRGB::Red;
-    }
-    FastLED.show();
-   
-  }
-}
-
-void RunDown() {
-  uint8_t i = 0;
-  for (uint8_t j = 0; j < LED_COUNT; j++) {
-    delay(500);
-    i = LED_COUNT-j-1;
-    if (i == LED_COUNT-1) {
-      strip[0] = CRGB::Black;
-      strip[i] = CRGB::Red;
-      strip[i-1] = CRGB::Red;
-    }
-    else 
-    if (i == 0){
-      strip[i+1] = CRGB::Black;
-      strip[i] = CRGB::Red;
-      strip[LED_COUNT-1] = CRGB::Red;
-    }  
-    else {
-      strip[i-1] = CRGB::Red;
-      strip[i] = CRGB::Red;
-      strip[i+1] = CRGB::Black;
-    }
-    FastLED.show();
-  }
-}
-
 void setup()
 {
   // Добавляем ленту
@@ -102,21 +60,22 @@ void setup()
  
 void loop()
 {
-  if (digitalRead(2) && !digitalRead(4)) {
+//if (false) {
+  if (digitalRead(0) && !digitalRead(4)) {
     if (n<=0)  
       n=LED_COUNT;
     n=n-1;
     NextDown(n);
     delay(200);
-  } else {
-    if (!digitalRead(2) && digitalRead(4)) {
-    n=n+1;
-    NextDown(n);
-    delay(200);
-    if (n<=LED_COUNT)  
-      n=0;
+  } else 
+    if (!digitalRead(0) && digitalRead(4)) {
+      if (n>=LED_COUNT-1)
+        n=-1;
+      n=n+1;
+      NextUp(n);
+      delay(200);
     } else
-    if (!digitalRead(2) && !digitalRead(4)) {
+    if (!digitalRead(0) && !digitalRead(4)) {
       for (int i = 0; i < LED_COUNT; i++) {
         strip[i] = CRGB::Red;
         FastLED.show();
@@ -125,6 +84,6 @@ void loop()
       for (int i = 0; i < LED_COUNT; i++) {
         strip[i] = CRGB::Green;
         FastLED.show();
-      }    
-  }
+      }
+//  } 
 }
