@@ -102,10 +102,29 @@ void setup()
  
 void loop()
 {
-  if (n<=0){
-    n=LED_COUNT;
+  if (digitalRead(2) && !digitalRead(4)) {
+    if (n<=0)  
+      n=LED_COUNT;
+    n=n-1;
+    NextDown(n);
+    delay(200);
+  } else {
+    if (!digitalRead(2) && digitalRead(4)) {
+    n=n+1;
+    NextDown(n);
+    delay(200);
+    if (n<=LED_COUNT)  
+      n=0;
+    } else
+    if (!digitalRead(2) && !digitalRead(4)) {
+      for (int i = 0; i < LED_COUNT; i++) {
+        strip[i] = CRGB::Red;
+        FastLED.show();
+      }
+    } else
+      for (int i = 0; i < LED_COUNT; i++) {
+        strip[i] = CRGB::Green;
+        FastLED.show();
+      }    
   }
-  n=n-1;
-  NextDown(n);
-  delay(200);
 }
