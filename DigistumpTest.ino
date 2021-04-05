@@ -7,36 +7,43 @@
 #define LED_PIN 1
  
 // Создаем переменную strip для управления нашей лентой.
+
+uint8_t n = 0;
+
 CRGB strip[LED_COUNT];
 
-void NextUp(int k) {
+void NextUp(uint8_t k) {
+  for (int i = 0; i < LED_COUNT; i++) {
+    strip[i] = CRGB::Black;
+  }
+  if (k == LED_COUNT-1){
+    strip[k] = CRGB::Red;
+    strip[0] = CRGB::Red;
+  }  
+  else {
+    strip[k] = CRGB::Red;
+    strip[k+1] = CRGB::Red;
+  }
+  FastLED.show();
+}
+
+void NextDown(uint8_t k) {
   for (int i = 0; i < LED_COUNT; i++) {
     strip[i] = CRGB::Black;
   }
   if (k == 0) {
-      strip[k] = CRGB::Red;
-      strip[k+1] = CRGB::Red;
-    }
-    else 
-    if (k == LED_COUNT-1){
-      strip[k] = CRGB::Red;
-      strip[0] = CRGB::Red;
-    }  
-    else {
-      strip[k] = CRGB::Red;
-      strip[k+1] = CRGB::Red;
-    }
-    FastLED.show();
-}
-
-void NextDown(int k) {
-  for (int i = 0; i < LED_COUNT; i++) {
-    strip[i] = CRGB::Black;
+    strip[k] = CRGB::Red;
+    strip[LED_COUNT-1] = CRGB::Red;    
   }
+  else {
+    strip[k] = CRGB::Red;
+    strip[k-1] = CRGB::Red;
+  }
+  FastLED.show();
 }
 
 void RunUp() {
-  for (int i = 0; i < LED_COUNT; i++) {
+  for (uint8_t i = 0; i < LED_COUNT; i++) {
     delay(500);
     if (i == 0) {
       strip[LED_COUNT-1] = CRGB::Black;
@@ -60,8 +67,8 @@ void RunUp() {
 }
 
 void RunDown() {
-  int i = 0;
-  for (int j = 0; j < LED_COUNT; j++) {
+  uint8_t i = 0;
+  for (uint8_t j = 0; j < LED_COUNT; j++) {
     delay(500);
     i = LED_COUNT-j-1;
     if (i == LED_COUNT-1) {
@@ -95,19 +102,10 @@ void setup()
  
 void loop()
 {
-  if (digitalRead(2)) {
-    RunDown();
+  if (n<=0){
+    n=LED_COUNT;
   }
-  else {
-    if (digitalRead(0)) {
-      RunUp();
-    } else{
-        if (digitalRead(4)) {
-          for (int i = 0; i < LED_COUNT; i++) {
-            strip[i] = CRGB::Green;
-          }
-        }
-    }
-  }
-  FastLED.show();
+  n=n-1;
+  NextDown(n);
+  delay(200);
 }
