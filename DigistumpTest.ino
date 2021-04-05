@@ -5,6 +5,8 @@
  
 // Указываем, к какому порту подключен вход ленты DIN.
 #define LED_PIN 1
+
+#define DELAY 200
  
 // Создаем переменную strip для управления нашей лентой.
 
@@ -66,14 +68,14 @@ void loop()
       n=LED_COUNT;
     n=n-1;
     NextDown(n);
-    delay(200);
+    delay(DELAY);
   } else 
     if (!digitalRead(0) && digitalRead(4)) {
       if (n>=LED_COUNT-1)
         n=-1;
       n=n+1;
       NextUp(n);
-      delay(200);
+      delay(DELAY);
     } else
     if (!digitalRead(0) && !digitalRead(4)) {
       for (int i = 0; i < LED_COUNT; i++) {
