@@ -21,17 +21,17 @@ void NextUp(uint8_t k) {
   if (k == LED_COUNT-1){
     strip[k] = CRGB::Red;
     strip[0] = CRGB::Red;
-//    strip[1] = CRGB::Red;
+    strip[1] = CRGB::Red;
   }
   if (k ==  LED_COUNT-2) {
     strip[k] = CRGB::Red;
     strip[k+1] = CRGB::Red;
-//    strip[0] = CRGB::Red;    
+    strip[0] = CRGB::Red;    
   }
   else {
     strip[k] = CRGB::Red;
     strip[k+1] = CRGB::Red;
-//    strip[k+2] = CRGB::Red;
+    strip[k+2] = CRGB::Red;
   }
   FastLED.show();
 }
@@ -42,11 +42,19 @@ void NextDown(uint8_t k) {
   }
   if (k == 0) {
     strip[k] = CRGB::Red;
-    strip[LED_COUNT-1] = CRGB::Red;    
+    strip[LED_COUNT-1] = CRGB::Red;
+    strip[LED_COUNT-2] = CRGB::Red;    
   }
   else {
-    strip[k] = CRGB::Red;
-    strip[k-1] = CRGB::Red;
+    if (k == 1) {
+        strip[k] = CRGB::Red;
+        strip[k-1] = CRGB::Red;
+        strip[LED_COUNT-1] = CRGB::Red;
+    } else {
+      strip[k] = CRGB::Red;
+      strip[k-1] = CRGB::Red;
+      strip[k-2] = CRGB::Red;
+    }
   }
   FastLED.show();
 }
